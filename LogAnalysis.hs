@@ -14,14 +14,14 @@ parseType (as : cd) = as
 parsemessage :: [String] -> ( MessageType, TimeStamp, String )
 parsemessage cd  = (parseType cd, parseTimeStamp cd, parseString cd)
 
-parsemessagehelp :: ( MessageType, TimeStamp, String) -> LogMessage
+parsemessagehelp :: (MessageType, TimeStamp, String) -> LogMessage
 parsemessagehelp (m,t,s) = m t s
 
 parseTimeStamp ::
-parseString ((c:as):cd) =
+parseString (as:cd) =
 
 parseString ::
-parseString ((c:as):cd) =
+parseString (as:cd) =
 
 main :: IO ()
 main = undefined
