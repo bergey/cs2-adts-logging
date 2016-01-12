@@ -8,20 +8,20 @@ import           Log
 parseMessage :: String -> LogMessage
 parseMessage (c:cs) = parsemessage (words cs)
 
-parseType :: [String] -> MessageType
-parseType (as : cd) = as
-
 parsemessage :: [String] -> ( MessageType, TimeStamp, String )
 parsemessage cd  = (parseType cd, parseTimeStamp cd, parseString cd)
 
 parsemessagehelp :: (MessageType, TimeStamp, String) -> LogMessage
 parsemessagehelp (m,t,s) = m t s
 
-parseTimeStamp ::
-parseString (as:cd) =
+parseType :: [String] -> MessageType
+parseType (as : cd) = as
 
-parseString ::
-parseString (as:cd) =
+parseTimeStamp :: [String] -> TimeStamp
+parseTimeStamp (as:cd) = cd !! 2
+
+parseString :: [String] -> String
+parseString (as:cd) = cd !! 3
 
 main :: IO ()
 main = undefined
