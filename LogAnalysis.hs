@@ -28,7 +28,7 @@ parseType cd = if cd !! 0 == "I"
                       else Error (read(cd !! 1))
 
 parseTimeStamp :: [String] -> TimeStamp
-parseTimeStamp cd = if (elem (cd !! 2 ,['0','1','2','3','4','5','6','7','8','9'])) 
+parseTimeStamp cd = if elem (cd !! 2 !! 0 ) ['0','1','2','3','4','5','6','7','8','9']
                     then read (cd !! 2)
                     else read( cd !! 1 )
 
