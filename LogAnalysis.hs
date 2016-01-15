@@ -33,22 +33,14 @@ parseType (c : cd) = if (c == 'I')
 					 	  else (Nothing, cd)
 
 er :: String -> (Maybe MessageType, String)
-er cd = (Just (Error (read (first (words cd)))), unwords (nf (words cd)))
+er cd = (Just (Error (read (head (words cd)))), unwords (tail (words cd)))
 --er cd = (Just (Error 50), cd)
-
-
-
-first :: [a] -> a
-first (a : as) = a 
-
-nf  :: [a] -> [a]
-nf (a : as) = as 
 
 
 parsestamp :: (Maybe MessageType, String) -> (Maybe MessageType, TimeStamp, String)
 parsestamp (Nothing, cd) = (Nothing ,0 ,cd)
 --parsestamp (e, cd) = (e, 1, unwords(nf (words cd)))
-parsestamp (e, cd) = (e, read (first (words cd)) , unwords (nf (words cd)))
+parsestamp (e, cd) = (e, read (head (words cd)) , unwords (tail (words cd)))
 
 parsemessage :: (Maybe MessageType, TimeStamp, String) -> LogMessage
 parsemessage (Nothing, n, c) = Unknown c
