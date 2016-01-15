@@ -35,9 +35,7 @@ parseTimeStamp cd = if elem (cd !! 2 !! 0 ) ['0','1','2','3','4','5','6','7','8'
 parseString :: [String] -> String
 parseString cd = if elem (cd !! 2 !! 0 ) ['0','1','2','3','4','5','6','7','8','9']
                  then cd !! 3 --Find way to continue list
-                 else cd !! 2 --Find way to continue list 
-
-  cd !! 2
+                 else cd !! 2 --Find way to continue list
 
 bangbang :: [String] -> String
 bangbang cd = if cd !! 0 == "1"
