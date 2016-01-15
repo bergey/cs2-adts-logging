@@ -12,7 +12,7 @@ parseMessage :: String -> LogMessage
 parseMessage cs = parseCompiler (parsemesshelp cs)
 
 parsemesshelp :: String -> ( MessageType, TimeStamp, String )
-parsemesshelp (c:cs) = parsemess (words cs)
+parsemesshelp cs = parsemess (words cs)
 
 parsemess :: [String] -> ( MessageType, TimeStamp, String )
 parsemess cd  = (parseType cd, parseTimeStamp cd, parseString cd)
@@ -21,17 +21,24 @@ parseCompiler :: (MessageType, TimeStamp, String) -> LogMessage
 parseCompiler (m,t,s) = LogMessage m t s
 
 parseType :: [String] -> MessageType
-parseType (as : cd) = if cd !! 1 == "I"
+parseType cd = if cd !! 0 == "I"
                       then Info
-                      else if cd !! 1 == "W"
+                      else if cd !! 0 == "W"
                       then Warning
-                      else Error (read(cd !! 2 ))
+                      else Error (read(cd !! 1))
 
 parseTimeStamp :: [String] -> TimeStamp
-parseTimeStamp (as:cd) = read( cd !! 2 )
+parseTimeStamp cd = if (elem (cd !! 2 ,['0','1','2','3','4','5','6','7','8','9'])) 
+                    then read (cd !! 2)
+                    else read( cd !! 1 )
 
 parseString :: [String] -> String
-parseString (as:cd) = cd !! 3
+parseString cd = cd !! 2
+
+bangbang :: [String] -> String
+bangbang cd = if cd !! 0 == "1"
+              then cd !! 0
+              else cd !! 0
 
 main :: IO ()
 main = undefined
