@@ -5,8 +5,14 @@ import           Log
 --parseMessage :: String -> LogMessage
 --parseMessage a = testParse
 
---parse :: String -> [LogMessage]
---parse cs =
+parse :: String -> [LogMessage]
+parse cs = parsestuff cs
+
+parseStuff :: String -> [String]
+parseStuff = lines (cs)
+
+parser :: [String] -> LogMessage
+parser cs = parseMessage(cs !! 1)
 
 parseMessage :: String -> LogMessage
 parseMessage cs = parseCompiler (parsemesshelp cs)
