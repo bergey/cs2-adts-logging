@@ -40,6 +40,8 @@ parseString cd = if elem (cd !! 2 !! 0 ) ['0','1','2','3','4','5','6','7','8','9
                  then unwords (drop 3 cd)
                  else unwords (drop 2 cd)
 
+--insert :: LogMessage -> MessageTree -> MessageTree
+
 
 main :: IO ()
 main = undefined
