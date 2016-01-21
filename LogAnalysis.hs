@@ -6,13 +6,10 @@ import           Log
 --parseMessage a = testParse
 
 parse :: String -> [LogMessage]
-parse cs = parsestuff cs
+parse cs = parseStuff (lines cs)
 
-parseStuff :: String -> [String]
-parseStuff = lines (cs)
-
-parser :: [String] -> LogMessage
-parser cs = parseMessage(cs !! 1)
+parseStuff :: [String] -> [LogMessage]
+parseStuff cs = map parseMessage cs
 
 parseMessage :: String -> LogMessage
 parseMessage cs = parseCompiler (parsemesshelp cs)
