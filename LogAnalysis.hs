@@ -6,6 +6,11 @@ import Data.Foldable
 main :: IO ()
 main = traverse_ print =<< testParse takeAllParse 100 "error.log"
 
+inOrder :: MessageTree -> [LogMessage]
+inOrder 
+
+ 
+
 build :: [LogMessage] -> MessageTree
 build xs = foldr insert Leaf xs
 
