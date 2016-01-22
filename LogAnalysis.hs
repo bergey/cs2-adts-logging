@@ -46,7 +46,7 @@ insert a as =  Node as a as
 
 build:: [LogMessage] -> MessageTree
 build ccs = insert (ccs!!0) (Leaf)
-
+-- Build doesn't work yet, need it to operate on all of the elements in the LogMessage list.
 
 main :: IO ()
 main = undefined
