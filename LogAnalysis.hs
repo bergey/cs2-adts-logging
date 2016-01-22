@@ -1,12 +1,48 @@
 module Main where
 
 import           Log
+import Data.Foldable
 
 main :: IO ()
-main = print (parseMessage "E 2 562 help help")
+main = traverse_ print =<< testParse takeAllParse 100 "error.log"
 
-takeAllParse :: [String] -> [LogMessage]
-takeAllParse s = map parseMessage s
+build :: [LogMessage] -> MessageTree
+build xs = foldr insert Leaf xs
+
+--addin :: LogMessage -> MessageTree -> MessageTree
+--addin xs Leaf = (Node Leaf xs Leaf)
+--addin xs y = insert xs y
+
+insert :: LogMessage -> MessageTree -> MessageTree
+insert x y = putIn x y
+
+putIn :: LogMessage -> MessageTree -> MessageTree
+putIn (Unknown _) x = x
+putIn nlog Leaf = (Node Leaf nlog Leaf)
+putIn nlog@(LogMessage a new c) (Node ma l mb) = if lessMove new l
+                        then (Node (putIn nlog ma) l mb)
+                        else (Node ma l (putIn nlog mb))
+							
+--need to add in message trees to functions below
+moreMove :: TimeStamp -> LogMessage -> Bool
+moreMove new (LogMessage _ check _ )= if new > check
+									then True
+									else False
+
+lessMove :: TimeStamp -> LogMessage -> Bool
+lessMove new (LogMessage _ check _ )= if new < check
+									then True
+									else False
+
+
+--ifLessThan :: String -> [String] -> String
+--ifLessThan (l, []) = (l, [])
+--ifLessThan (l, (s:ss)) = if l < s
+--						then ifLessThan l ss
+--						else ifLessThan s ss
+
+takeAllParse :: String -> [LogMessage]
+takeAllParse s = map parseMessage (lines s)
 
 parseMessage :: String -> LogMessage
 parseMessage (c:cs) = combineToLog (c:cs) (checkMessageType c) (checkTimeStamp (ifError(c:cs)))
