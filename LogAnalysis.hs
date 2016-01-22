@@ -44,7 +44,9 @@ insert :: LogMessage -> MessageTree -> MessageTree
 insert (Unknown _) as = as
 insert a as =  Node as a as
 
---build:: [LogMessage] -> MessageTree
+build:: [LogMessage] -> MessageTree
+build ccs = insert (ccs!!0) (Leaf)
+
 
 main :: IO ()
 main = undefined
