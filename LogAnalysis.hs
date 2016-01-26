@@ -42,7 +42,7 @@ parseString cd = if elem (cd !! 2 !! 0 ) ['0','1','2','3','4','5','6','7','8','9
 
 insert :: LogMessage -> MessageTree -> MessageTree
 insert (Unknown _) as = as
-insert a as =  Node as a as
+insert a as =  Node Leaf a as
 
 build:: [LogMessage] -> MessageTree
 build ccs = insert (ccs!!0) (Leaf)
