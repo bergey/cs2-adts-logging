@@ -4,12 +4,27 @@ import           Log
 import Data.Foldable
 
 main :: IO ()
-main = traverse_ print =<< testParse takeAllParse 100 "error.log"
+main = traverse_ print =<< testWhatWentWrong takeAllParse (\ls -> (whatWentWrong(ls))) "error.log"
+
+whatWentWrong :: [LogMessage] -> [String]
+whatWentWrong ls = backToStrings(inOrder(build(checkWorth(ls))))
+
+checkWorth :: [LogMessage] -> [LogMessage]
+checkWorth ls = fmap worthIt ls
+
+worthIt :: LogMessage -> LogMessage
+worthIt l@(LogMessage (Error level) _ s) = if level >= 50
+								then l
+								else Unknown (show(l))
+worthIt l@(LogMessage _ _ _) = Unknown (show(l))
+worthIt (Unknown s) = Unknown s
+
+backToStrings :: [LogMessage] -> [String]
+backToStrings xs = fmap show xs
 
 inOrder :: MessageTree -> [LogMessage]
-inOrder 
-
- 
+inOrder (Node a t b) = inOrder a ++ [t] ++ inOrder b
+inOrder Leaf = []
 
 build :: [LogMessage] -> MessageTree
 build xs = foldr insert Leaf xs
