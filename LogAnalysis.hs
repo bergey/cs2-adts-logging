@@ -28,4 +28,15 @@ parseMessage (errorLine) = let (m,t,s) = parseMessageTimeStamp (words errorLine)
 
 parse :: String -> [LogMessage]
 parse (errorlog) = map (parseMessage) (lines errorlog)
- 
+
+insert :: LogMessage -> MessageTree -> MessageTree
+insert lMessage Leaf = Node Leaf lMessage Leaf
+insert lMessage (Node l lm r) = if lMessage > lm
+								then insert lMessage l
+								else insert lMessage r
+insert (Unknown s1) x = x
+
+instance Ord LogMessage where
+	LogMessage mt1 ts1 s1 > LogMessage mt2 ts2 s2 = ts1>ts2 
+	Unknown s1 > LogMessage mt2 ts2 s2 = False
+  
