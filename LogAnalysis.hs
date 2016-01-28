@@ -45,10 +45,11 @@ insert (Unknown _) as = as
 insert (LogMessage j k l) (Node z (LogMessage x b n) v) = if k > b
                                                           then Node Leaf (LogMessage j k l ) (Node z (LogMessage x b n) v)
                                                           else Node (Node z (LogMessage x b n) v) (LogMessage j k l) Leaf
-insert a Leaf = Node Leaf a Leaf
+insert (LogMessage j k l) Leaf = Node Leaf (LogMessage j k l) Leaf
 
 build:: [LogMessage] -> MessageTree
-build ccs = insert (ccs!!0) (Leaf)
+build [] = Leaf
+build (c:ccs) = insert (c) (build ccs)
 -- Build doesn't work yet, need it to operate on all of the elements in the LogMessage list.
 
 main :: IO ()
