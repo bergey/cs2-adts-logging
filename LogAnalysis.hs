@@ -50,6 +50,11 @@ insert (LogMessage j k l) Leaf = Node Leaf (LogMessage j k l) Leaf
 build:: [LogMessage] -> MessageTree
 build [] = Leaf
 build (c:ccs) = insert (c) (build ccs)
+
+inorder :: MessageTree -> [LogMessage]
+inorder (Node z (LogMessage x b n) v) = ((LogMessage x b n):(inorder (Node z(LogMessage x b n)v))) 
+inorder Leaf = []
+
 -- Build doesn't work yet, need it to operate on all of the elements in the LogMessage list.
 
 main :: IO ()
