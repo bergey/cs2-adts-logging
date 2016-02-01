@@ -42,5 +42,7 @@ instance Ord LogMessage where
 	LogMessage mt1 ts1 s1 <= LogMessage mt2 ts2 s2 = ts1 <= ts2 
 	Unknown s1 <= LogMessage mt2 ts2 s2 = False
 
+build :: [LogMessage] -> MessageTree
+build lMessage = map (insert Leaf) lMessage
 
   
