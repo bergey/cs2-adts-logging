@@ -17,41 +17,47 @@ tests = testGroup "unit tests"
 
     -- Add at least 3 more test cases for 'parseMessage', including
     -- one with an error, one with a warning, and one with an Unknown
-    testCase "parseMessage Error"
+    ,testCase "parseMessage Error"
     ( parseMessage "E 90 12 Armadillo Escaped the cage!" @?=
-        LogMessage Error 90 12 "Armadillo Escaped the cage!" )
+        LogMessage (Error 90) 12 "Armadillo Escaped the cage!" )
 
-    testCase "parseMessage Warning"
+    ,testCase "parseMessage Warning"
     ( parseMessage "W 10 The cage door is open" @?=
         LogMessage Warning 10 "The cage door is open" )
 
-    testCase "parseMessage Unknown"
+    ,testCase "parseMessage Unknown"
     ( parseMessage "This should not be working" @?=
         Unknown "This should not be working" )
 
     -- We should also test the smaller parts.  Change the test below
     -- to match the code you actually wrote.
-  , testCase "parseMessageType I"
-    ( parseMessageType "I 6 Completed armadillo processing"
+  , testCase "checkMessageType I"
+    ( checkMessageType "I 6 Completed armadillo processing"
       @?= Just Info)
 
-  , testCase "parseMessageType E"
-    ( parseMessageType "E 90 12 Armadillo Escaped the cage!"
+  , testCase "checkMessageType E"
+    ( checkMessageType "E 90 12 Armadillo Escaped the cage!"
       @?= Just Error)
 
-  , testCase "parseMessageType W"
-    ( parseMessageType "W 10 The cage door is open"
+  , testCase "checkMessageType W"
+    ( checkMessageType "W 10 The cage door is open"
         @?= Just Warning)
     
-  , testCase "parseMessageType Uknown"
-    ( parseMessageType "This should not be working"
-        @? Just Uknown)
+  , testCase "checkMessageType Unknown"
+    ( checkMessageType "This should not be working"
+        @? Nothing)
 
     -- Add at least 3 more tests for MessageType parsing in isolation.
 
     -- Add tests for timestamp parsing.  Think in particular about
     -- what the function does if the input doesn't start with a digit,
     -- or has some spaces followed by digits.
+
+  , testCase "checkTimeStamp Message"
+    ( checkTimeStamp (0, "6 Completed armadillo processing")
+        @? (0, (6,"Completed armadillo processing")))
+
+
 
     -- How many tests do you think is enough?  Write at least 3
     -- sentences explaining your decision.

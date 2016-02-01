@@ -65,7 +65,9 @@ takeAllParse :: String -> [LogMessage]
 takeAllParse s = map parseMessage (lines s)
 
 parseMessage :: String -> LogMessage
-parseMessage (c:cs) = combineToLog (c:cs) (checkMessageType c) (checkTimeStamp (ifError(c:cs)))
+parseMessage (c:cs) = if checkMessageType c == Nothing
+	then Unknown (c:cs)
+	else combineToLog (c:cs) (checkMessageType c) (checkTimeStamp (ifError(c:cs)))
 
 checkMessageType :: Char -> Maybe MessageType
 checkMessageType c = if c == 'I'
@@ -76,20 +78,33 @@ checkMessageType c = if c == 'I'
 					then Just (Error 0)
 					else Nothing
 
+--if it is an error, it runs takeoutint on it to get the level
+--otherwise it returns 0, the ones with 0 will have the 0 taken out later
+--returns the string, with the error level taken out if aplicable
 ifError :: String -> (Int, String)
 ifError (c:cs) = if c == 'E'
 				then takeOutInt (words cs)
 				else (0, cs)
 
+--takes out the first thing in the string as the int
+--only run if it is an error to take out the 
+--error severity, and returns the rest of the string
 takeOutInt :: [String] -> (Int, String)
 takeOutInt (c:cs) = (read c, unwords cs)
 
+--just runs readtimestamp and keeps the int for in case it is an
+--error and it returned an important error level there
+--takes out the timestamp and returns the rest of the string
 checkTimeStamp :: (Int,String) -> (Int, (TimeStamp, String))
 checkTimeStamp (i,s) = (i, readTimeStamp (words(s)))
 
+--takes a list of strings and uses the first character (already
+--without message type) and makes that the time stamp, then returns
+--the rest of the string
 readTimeStamp :: [String] -> (TimeStamp, String)
 readTimeStamp (s:ss) = (read (s), unwords ss)
 
+--Combines inputs of the components of a log message into a LogMessage
 combineToLog :: String -> Maybe MessageType -> (Int, (TimeStamp, String)) -> LogMessage
 combineToLog origs(Just m) (0, (t, s)) = LogMessage m t s
 combineToLog origs (Just m) (i, (t, s)) = LogMessage (Error i) t s
