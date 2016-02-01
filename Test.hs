@@ -17,14 +17,24 @@ tests = testGroup "unit tests"
 
     -- Add at least 3 more test cases for 'parseMessage', including
     -- one with an error, one with a warning, and one with an Unknown
-
+    , testCase "parseMessage Error"
+        ( parseMessage "E 2 6 This went wrong" @?=
+        LogMessage (Error 2) 6 "This went wrong" )
+    , testCase "parseMessage Warning"
+        ( parseMessage "W 6 This is a warning" @?=
+        LogMessage Warning 6 "This is a warning" )
+    , testCase "parseMessage Unknown"
+        ( parseMessage "Unknown a thing happened" @?=
+        Unknown "a thing happened" ) ]
 
     -- We should also test the smaller parts.  Change the test below
     -- to match the code you actually wrote.
-  , testCase "parseMessageType I"
-    ( parseMessageType "I 6 Completed armadillo processing"
-      @?= Just Info)
-
+  , testCase "parseMessageMessageType I"
+    ( parseMessageMessageType "I 6 Completed armadillo processing"
+      @?= Just Info "6 Completed armadillo processing")
+ , testCase "parseMessageMessageType I"
+    ( parseMessageMessageType "I 6 Completed armadillo processing"
+      @?= Just Info "6 Completed armadillo processing")
     -- Add at least 3 more tests for MessageType parsing in isolation.
 
     -- Add tests for timestamp parsing.  Think in particular about
