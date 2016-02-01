@@ -17,13 +17,19 @@ tests = testGroup "unit tests"
 
     -- Add at least 3 more test cases for 'parseMessage', including
     -- one with an error, one with a warning, and one with an Unknown
+    testCase "parseMessage Warning"
+    ( parseMessage "W 6 the armadillo is processing" @?=
+      LogMessage Warning 6 "armadillo is processing" )
 
+    testCase "parseMessage Error Int"
+    ( parseMessage "I 45 6 armadillos can't process" @?=
+      LogMessage Error Int 6 "armadillos can't process" )
 
     -- We should also test the smaller parts.  Change the test below
     -- to match the code you actually wrote.
-  , testCase "parseMessageType I"
-    ( parseMessageType "I 6 Completed armadillo processing"
-      @?= Just Info)
+  , testCase "checkmessagemessagetype"
+    ( checkmessagemessagetype "[we,er,tr,yu]"
+      @?= String)
 
     -- Add at least 3 more tests for MessageType parsing in isolation.
 
