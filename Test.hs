@@ -17,7 +17,9 @@ tests = testGroup "unit tests"
 
     -- Add at least 3 more test cases for 'parseMessage', including
     -- one with an error, one with a warning, and one with an Unknown
-
+  , testCase "parseMessage Warning"
+    ( parseMessage "W 4 This is an error" @?=
+      LogMessage Warning 4 "This is an error")
 
     -- We should also test the smaller parts.  Change the test below
     -- to match the code you actually wrote.
