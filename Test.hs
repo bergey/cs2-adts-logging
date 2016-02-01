@@ -21,9 +21,9 @@ tests = testGroup "unit tests"
 
     -- We should also test the smaller parts.  Change the test below
     -- to match the code you actually wrote.
-  , testCase "parseMessageType I"
-    ( parseMessageType "I 6 Completed armadillo processing"
-      @?= Just Info)
+  , testCase "parseType I"
+    ( parseType ["I","6","Completed","armadillo","processing"]
+      @?=Info)
 
     -- Add at least 3 more tests for MessageType parsing in isolation.
 
