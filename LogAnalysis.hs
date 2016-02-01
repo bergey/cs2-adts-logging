@@ -55,10 +55,10 @@ inorder :: MessageTree -> [LogMessage]
 inorder (Node z (LogMessage x b n) v) = ((LogMessage x b n):(inorder (Node z(LogMessage x b n)v)))
 inorder Leaf = []
 
-whatWentWrong :: [LogMessage] -> [String]
-whatWentWrong ((LogMessage j k l):ccs) = if k > 50
-                                       then l 
-                                       else ccs
+--whatWentWrong :: [LogMessage] -> [String]
+--whatWentWrong ((LogMessage j k l):ccs) = if k > 50
+--                                       then l
+--                                       else ccs
 
 main :: IO ()
 main = undefined
