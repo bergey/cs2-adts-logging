@@ -21,7 +21,7 @@ parsemess :: [String] -> ( MessageType, TimeStamp, String )
 parsemess cd  = (parseType cd, parseTimeStamp cd, parseString cd)
 
 parseCompiler :: (MessageType, TimeStamp, String) -> LogMessage
-parseCompiler (Unknown cd) = Unknown cd 
+parseCompiler (Unknown cd) = Unknown cd
 parseCompiler (m,t,s) = LogMessage m t s
 
 parseType :: [String] -> MessageType
