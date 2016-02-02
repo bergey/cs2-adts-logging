@@ -3,7 +3,7 @@ module Main where
 import Log
 
 main :: IO ()
-main = testWhatWentWrong parse whatWentWrong (sample.log)
+main = (testWhatWentWrong parse whatWentWrong "sample.log")
 
 parseMessage :: String -> LogMessage
 parseMessage s | head(s)=='I' = LogMessage Info (read ((words s) !! 1)) (unwords (drop 1 (words s)))
@@ -30,7 +30,11 @@ inOrder (Node mt1 lm mt2) = inOrder mt1 ++ [lm] ++ inOrder mt2
 helper :: LogMessage -> String
 helper (LogMessage t ts s) = show(t) ++ show(ts) ++ s 
 
+checkType :: LogMessage -> Bool
+checkType (LogMessage (Error sv) _ _) | sv>50 = True
+checkType _ = False
+
 whatWentWrong :: [LogMessage] -> [String]
-whatWentWrong [LogMessage t ts s] = map (helper) (filter (t==(Error Int) && t>50) (inOrder (build [LogMessage t ts s])))
+whatWentWrong [LogMessage t ts s] = map (helper) (filter (checkType) (inOrder (build [LogMessage t ts s])))
 
 --Filter so only messages that are errors with severity of 50 or greater are retained
