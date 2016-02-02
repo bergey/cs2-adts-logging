@@ -3,9 +3,6 @@ module LogAnalysis where
 import           Log
 import Data.Foldable
 
-main :: IO ()
-main = traverse_ print =<< testWhatWentWrong takeAllParse (\ls -> (whatWentWrong(ls))) "error.log"
-
 whatWentWrong :: [LogMessage] -> [String]
 whatWentWrong ls = backToStrings(inOrder(build(checkWorth(ls))))
 

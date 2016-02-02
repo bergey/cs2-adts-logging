@@ -14,9 +14,9 @@ tests = testGroup "unit tests"
       LogMessage Info 6 "Completed armadillo processing" )
     -- If you don't have a function called praseMessage, change the
     -- test to match your code.
-
-    -- Add at least 3 more test cases for 'parseMessage', including
-    -- one with an error, one with a warning, and one with an Unknown
+    
+  --  -- Add at least 3 more test cases for 'parseMessage', including
+  --  -- one with an error, one with a warning, and one with an Unknown
     ,testCase "parseMessage Error"
     ( parseMessage "E 90 12 Armadillo Escaped the cage!" @?=
         LogMessage (Error 90) 12 "Armadillo Escaped the cage!" )
@@ -29,42 +29,56 @@ tests = testGroup "unit tests"
     ( parseMessage "This should not be working" @?=
         Unknown "This should not be working" )
 
-    -- We should also test the smaller parts.  Change the test below
-    -- to match the code you actually wrote.
+  --  -- We should also test the smaller parts.  Change the test below
+  --  -- to match the code you actually wrote.
   , testCase "checkMessageType I"
-    ( checkMessageType "I 6 Completed armadillo processing"
+    ( checkMessageType 'I'
       @?= Just Info)
 
+
   , testCase "checkMessageType E"
-    ( checkMessageType "E 90 12 Armadillo Escaped the cage!"
-      @?= Just Error)
+    ( checkMessageType 'E'
+      @?= Just (Error 0))
 
   , testCase "checkMessageType W"
-    ( checkMessageType "W 10 The cage door is open"
+    ( checkMessageType 'W'
         @?= Just Warning)
     
   , testCase "checkMessageType Unknown"
-    ( checkMessageType "This should not be working"
-        @? Nothing)
+    ( checkMessageType 'C'
+        @?= Nothing)
 
-    -- Add at least 3 more tests for MessageType parsing in isolation.
+  --  -- Add at least 3 more tests for MessageType parsing in isolation.
 
-    -- Add tests for timestamp parsing.  Think in particular about
-    -- what the function does if the input doesn't start with a digit,
-    -- or has some spaces followed by digits.
+  --  -- Add tests for timestamp parsing.  Think in particular about
+  --  -- what the function does if the input doesn't start with a digit,
+  --  -- or has some spaces followed by digits.
 
-  , testCase "checkTimeStamp Message"
+  , testCase "checkTimeStamp Single Diget"
     ( checkTimeStamp (0, "6 Completed armadillo processing")
-        @? (0, (6,"Completed armadillo processing")))
+        @?= (0, (6,"Completed armadillo processing")))
 
+  , testCase "checkTimeStamp Double Diget"
+    ( checkTimeStamp (0, "66 Completed armadillo processing")
+        @?= (0, (66,"Completed armadillo processing")))
 
+  , testCase "checkTimeStamp Triple Diget"
+    ( checkTimeStamp (0, "666 Completed armadillo processing")
+        @?= (0, (666,"Completed armadillo processing")))
 
+  , testCase "checkTimeStamp Quadruple Diget"
+    ( checkTimeStamp (0, "6666 Completed armadillo processing")
+        @?= (0, (6666,"Completed armadillo processing")))
     -- How many tests do you think is enough?  Write at least 3
     -- sentences explaining your decision.
 
     -- Write at least 5 tests for 'insert', with sufficiently
     -- different inputs to test most of the cases.  Look at your code
     -- for 'insert', and any bugs you ran into while writing it.
+
+  , testCase "insert new"
+    ( insert new@(LogMessage )
+        @?= (0, (6,"Completed armadillo processing")))
 
     -- Next week we'll have the computer write more tests, to help us
     -- be more confident that we've tested all the tricky bits and
@@ -77,7 +91,6 @@ tests = testGroup "unit tests"
     -- inputs.  You may want to reuse MessageTrees from the tests on
     -- 'insert' above.  You may even want to move them elsewhere in
     -- the file and give them names, to more easiely reuse them.
-
   ]
 
 main = defaultMain tests
