@@ -18,9 +18,16 @@ tests = testGroup "unit tests"
     -- Add at least 3 more test cases for 'parseMessage', including
     -- one with an error, one with a warning, and one with an Unknown
   , testCase "parseMessage Warning"
-    ( parseMessage "W 4 This is an error" @?=
-      LogMessage Warning 4 "This is an error")
+    ( parseMessage "W 4 This is a warning!" @?=
+      LogMessage Warning 4 "This is a warning!")
 
+  , testCase "parseMessage Error"
+     ( parseMessage "E 4 5 This is an error" @?=
+      LogMessage (Error 4) 5 "This is an error")
+
+  , testCase "parseMessage Unknown"
+     ( parseMessage "Unknown words are written here" @?=
+      Unknown "words are written here")
     -- We should also test the smaller parts.  Change the test below
     -- to match the code you actually wrote.
   , testCase "parseType I"
