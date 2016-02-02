@@ -59,6 +59,3 @@ inorder Leaf = []
 --whatWentWrong ((LogMessage j k l):ccs) = if k > 50
 --                                       then l
 --                                       else ccs
-
-main :: IO ()
-main = print "hello"
