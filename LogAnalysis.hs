@@ -61,4 +61,4 @@ inorder Leaf = []
 --                                       else ccs
 
 main :: IO ()
-main = undefined
+main = print "hello"
