@@ -14,31 +14,35 @@ parseStuff cs = map parseMessage cs
 parseMessage :: String -> LogMessage
 parseMessage cs = parseCompiler (parsemesshelp cs)
 
-parsemesshelp :: String -> ( MessageType, TimeStamp, String )
+parsemesshelp :: String -> (Maybe MessageType, TimeStamp, Maybe String )
 parsemesshelp cs = parsemess (words cs)
 
-parsemess :: [String] -> ( MessageType, TimeStamp, String )
+parsemess :: [String] -> (Maybe MessageType, TimeStamp, Maybe String )
 parsemess cd  = (parseType cd, parseTimeStamp cd, parseString cd)
 
-parseCompiler :: (MessageType, TimeStamp, String) -> LogMessage
-parseCompiler (Unknown cd) = Unknown cd
-parseCompiler (m,t,s) = LogMessage m t s
+parseCompiler :: (Maybe MessageType, TimeStamp,Maybe String) -> LogMessage
+parseCompiler (Nothing,t,Nothing) = Unknown t
+parseCompiler (Just m,t,Just s) = LogMessage m t s
 
-parseType :: [String] -> MessageType
+parseType :: [String] -> Maybe MessageType
 parseType cd = if cd !! 0 == "I"
-                      then Info
+                      then Just Info
                       else if cd !! 0 == "W"
-                      then Warning
-                      else Error (read(cd !! 1))
+                      then Just Warning
+                      else if cd !! 0 == "Unknown"
+                      then Nothing
+                      else Just (Error (read(cd !! 1)))
 
 parseTimeStamp :: [String] -> TimeStamp
 parseTimeStamp cd = if elem (cd !! 2 !! 0 ) ['0','1','2','3','4','5','6','7','8','9']
                     then read (cd !! 2)
                     else read( cd !! 1 )
 
-parseString :: [String] -> String
+parseString :: [String] -> Maybe String
 parseString cd = if elem (cd !! 2 !! 0 ) ['0','1','2','3','4','5','6','7','8','9']
                  then unwords (drop 3 cd)
+                 else if elem (cd !! 2 !! 0) [' ']
+                 then Nothing
                  else unwords (drop 2 cd)
 
 insert :: LogMessage -> MessageTree -> MessageTree
