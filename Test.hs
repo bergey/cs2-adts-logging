@@ -32,7 +32,7 @@ tests = testGroup "unit tests"
     -- to match the code you actually wrote.
   , testCase "parseType I"
     ( parseType ["I","6","Completed","armadillo","processing"]
-      @?=Info)
+      @?=Just Info)
 
     -- Add at least 3 more tests for MessageType parsing in isolation.
 
