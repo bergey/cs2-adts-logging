@@ -2,9 +2,6 @@ module LogAnalysis where
 
 import Log
 
-main :: IO ()
-main = undefined
-
 parseMessagehelper::String->[String]
 parseMessagehelper a = words a
 
@@ -25,17 +22,22 @@ checkmessagemessagetype (c:cs) | errormessagetypes(c:cs) == Info = cs!!0
 							   | errormessagetypes(c:cs) == Warning = cs!!0   
 							   | otherwise = cs!!1
 
+dropthisamount::[String]->Int 
+dropthisamount (c:cs) = case errormessagetypes(c:cs) of 
+	Error b  -> 3 
+	otherwise ->2 
+
 parseMessage :: String -> LogMessage
-parseMessage a = LogMessage (errormessagetypes(untranslatederror)) (read (checkmessagemessagetype(untranslatederror))) (parseMessagehelper2 (drop 2 untranslatederror)) where
+parseMessage a = LogMessage (errormessagetypes(untranslatederror)) (read (checkmessagemessagetype(untranslatederror))) (parseMessagehelper2 (drop (dropthisamount(untranslatederror)) untranslatederror)) where
 	untranslatederror = (parseMessagehelper a) 
 
 parse :: String -> [LogMessage]
 parse a = map parseMessage (lines a)
 
-data MessageTree = Leaf
-| Node MessageTree LogMessage MessageTree
+--data MessageTree = Leaf
+-- Node MessageTree LogMessage MessageTree
 
-insert :: LogMessage -> MessageTree -> MessageTree
+--insert :: LogMessage -> MessageTree -> MessageTree
 
 
 
