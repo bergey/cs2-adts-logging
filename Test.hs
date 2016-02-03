@@ -76,9 +76,25 @@ tests = testGroup "unit tests"
     -- different inputs to test most of the cases.  Look at your code
     -- for 'insert', and any bugs you ran into while writing it.
 
-  , testCase "insert new"
-    ( insert new@(LogMessage )
-        @?= (0, (6,"Completed armadillo processing")))
+  , testCase "insert blank"
+    ( insert (LogMessage Info 6 "Completed armadillo processing") Leaf
+        @?= Node Leaf (LogMessage Info 6 "Completed armadillo processing") Leaf)
+
+  , testCase "insert moreNew"
+    ( insert (LogMessage Info 15 "Completed armadillo processing") (Node Leaf (LogMessage Warning 10 "The cage door is open") Leaf)
+        @?= Node Leaf (LogMessage Warning 10 "The cage door is open") (Node Leaf (LogMessage Info 15 "Completed armadillo processing") Leaf))
+
+  , testCase "insert lessNew"
+    ( insert (LogMessage Info 6 "Completed armadillo processing") (Node Leaf (LogMessage Warning 10 "The cage door is open") Leaf)
+        @?= Node (Node Leaf (LogMessage Info 6 "Completed armadillo processing") Leaf) (LogMessage Warning 10 "The cage door is open") Leaf)
+
+  , testCase "insert lessNewDouble"
+    ( insert (LogMessage Info 6 "hi") (Node (Node Leaf (LogMessage Info 15 "sup") Leaf) (LogMessage Warning 50 "bye") Leaf)
+        @?= Node (Node (Node Leaf (LogMessage Info 6 "hi") Leaf) (LogMessage Info 15 "sup") Leaf) (LogMessage Warning 50 "bye") Leaf)
+
+  , testCase "insert moreNewDouble"
+    ( insert (LogMessage Info 100 "hi") (Node Leaf (LogMessage Warning 20 "bye") (Node Leaf (LogMessage Info 50 "sup") Leaf))
+        @?= Node Leaf (LogMessage Warning 20 "bye") (Node Leaf (LogMessage Info 50 "sup") (Node Leaf (LogMessage Info 100 "hi") Leaf)))
 
     -- Next week we'll have the computer write more tests, to help us
     -- be more confident that we've tested all the tricky bits and
