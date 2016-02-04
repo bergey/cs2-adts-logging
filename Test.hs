@@ -7,6 +7,16 @@ import Log
 -- import everything *except* `main` from LogAnalysis
 import LogAnalysis hiding (main)
 
+l1 = LogMessage Info 1 "hi1"
+l2 = LogMessage Warning 12 "hi2"
+l3 = LogMessage Warning 13 "hi3"
+l4 = LogMessage Info 14 "hi4"
+l5 = LogMessage Warning 15 "hi5"
+l6 = LogMessage Info 16 "hi6"
+l7 = LogMessage Warning 17 "hi7"
+l8 = LogMessage Info 18 "hi8"
+l9 = LogMessage Info 19 "hi9"
+
 tests :: TestTree
 tests = testGroup "unit tests"
   [ testCase "parseMessage Info"
@@ -72,6 +82,10 @@ tests = testGroup "unit tests"
     -- How many tests do you think is enough?  Write at least 3
     -- sentences explaining your decision.
 
+--I think it is enough tests when you can tell based off of which test fails, which part is failing. For instance, if the error fails, I know that
+--the program is failing in recognizing errors. Or for Insert, that it failed because I was missing a blank case. As long as from my tests, I can tell which program is failing,
+--on which acceptable imput, I feel that is sufficient tests. 
+
     -- Write at least 5 tests for 'insert', with sufficiently
     -- different inputs to test most of the cases.  Look at your code
     -- for 'insert', and any bugs you ran into while writing it.
@@ -102,11 +116,20 @@ tests = testGroup "unit tests"
     -- actually run every line of our code (called "coverage"), but we
     -- won't learn those this year.
 
+  , testCase "inOrder full"
+    ( inOrder (Node (Node (Node Leaf l1 Leaf) l2 (Node (Node Leaf l3 Leaf) l4 (Node Leaf l5 Leaf))) l6 (Node Leaf l7 (Node Leaf l8 (Node Leaf l9 Leaf))))
+        @?= [l1,l2,l3,l4,l5,l6,l7,l8,l9] )
+
+  , testCase "inOrder empty"
+    ( inOrder Leaf
+        @?= [] )
+
     -- Write tests for 'inOrder'.  Remember that the input tree is
     -- meant to already be sorted, so it's fine to only test such
     -- inputs.  You may want to reuse MessageTrees from the tests on
     -- 'insert' above.  You may even want to move them elsewhere in
     -- the file and give them names, to more easiely reuse them.
+  
   ]
 
 main = defaultMain tests
