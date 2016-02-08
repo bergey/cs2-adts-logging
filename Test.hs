@@ -49,7 +49,7 @@ tests = testGroup "unit tests"
     -- Add tests for timestamp parsing.  Think in particular about
     -- what the function does if the input doesn't start with a digit,
     -- or has some spaces followed by digits.
-   , testCase "parseTimeStamp onenum"
+   , testCase "parseTimeStamp oneNum"
     ( parseTimeStamp ["I","6","Completed","armadillo","processing"]
     @?= Just 6)
 
@@ -62,6 +62,11 @@ tests = testGroup "unit tests"
     @?= Nothing)
     -- How many tests do you think is enough?  Write at least 3
     -- sentences explaining your decision.
+    
+    -- You should have tests for every possible scenario you could have.
+    -- Whether that's 100 tests or two, you should try to make sure regardless of
+    -- what your code is given it will be able to handle it without dying. That is
+    -- what good code does.
 
     -- Write at least 5 tests for 'insert', with sufficiently
     -- different inputs to test most of the cases.  Look at your code
