@@ -27,25 +27,49 @@ tests = testGroup "unit tests"
 
     -- We should also test the smaller parts.  Change the test below
     -- to match the code you actually wrote.
-  , testCase "checkmessagemessagetype"
+  
+
+  , testCase "Data type Info test for checkmessagemessagetype"
     ( checkmessagemessagetype ["I","help","uoy","mum m8"]
+  
       @?= "help")
 
- , testCase "checkmessagemessagetype"
+
+
+  , testCase "Data type Warning test for checkmessagemessagetype"
     ( checkmessagemessagetype ["W","help","uoy","mum m8"]
       @?= "help")
 
-, testCase "checkmessagemessagetype"
-    ( checkmessagemessagetype ["E","help","uoy","mum m8"]
+
+
+  , testCase "Data type Error test for checkmessagemessagetype"
+    ( checkmessagemessagetype ["E","2","uoy","mum m8"]
       @?= "uoy")
+  
     -- Add at least 3 more tests for MessageType parsing in isolation.
 
     -- Add tests for timestamp parsing.  Think in particular about
     -- what the function does if the input doesn't start with a digit,
     -- or has some spaces followed by digits.
+    
+    --Test the time stamp contions
+
+    , testCase "dropthisamount testing otherwise"
+    ( dropthisamount ["I","2","uoy","mum m8"]
+      @?= 2)
+
+    , testCase "dropthisamount testing Error b output"
+    ( dropthisamount ["E","2","uoy","mum m8"]
+      @?= 3)
+
 
     -- How many tests do you think is enough?  Write at least 3
     -- sentences explaining your decision.
+
+--I think you need to test every function with atleast every way it could ever be used in the program
+--What I mean by this is if a function has three uses in a program or rather three possible outputs
+-- Then you need three test
+
 
     -- Write at least 5 tests for 'insert', with sufficiently
     -- different inputs to test most of the cases.  Look at your code

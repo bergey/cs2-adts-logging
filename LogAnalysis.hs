@@ -34,14 +34,16 @@ parseMessage a = LogMessage (errormessagetypes(untranslatederror)) (read (checkm
 parse :: String -> [LogMessage]
 parse a = map parseMessage (lines a)
 
---data MessageTree = Leaf
--- Node MessageTree LogMessage MessageTree
+data MessageTree = Leaf
+ Node MessageTree LogMessage MessageTree
 
---insert :: LogMessage -> MessageTree -> MessageTree
+insert :: LogMessage -> MessageTree -> MessageTree
+insert a = Node MessageTree a MessageTree
+insert = Leaf Leaf
 
 
-
---build :: [LogMessage] -> MessageTree
+build :: [LogMessage] -> MessageTree
+build a = map insert a
 
 --inOrder :: MessageTree -> [LogMessage]
 
