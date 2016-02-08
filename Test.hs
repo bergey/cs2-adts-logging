@@ -62,7 +62,7 @@ tests = testGroup "unit tests"
     @?= Nothing)
     -- How many tests do you think is enough?  Write at least 3
     -- sentences explaining your decision.
-    
+
     -- You should have tests for every possible scenario you could have.
     -- Whether that's 100 tests or two, you should try to make sure regardless of
     -- what your code is given it will be able to handle it without dying. That is
@@ -71,7 +71,7 @@ tests = testGroup "unit tests"
     -- Write at least 5 tests for 'insert', with sufficiently
     -- different inputs to test most of the cases.  Look at your code
     -- for 'insert', and any bugs you ran into while writing it.
-
+   
     -- Next week we'll have the computer write more tests, to help us
     -- be more confident that we've tested all the tricky bits and
     -- edge cases.  There are also tools to make sure that our tests
