@@ -29,23 +29,23 @@ parseType cd = if cd !! 0 == "I"
                       then Just Info
                       else if cd !! 0 == "W"
                       then Just Warning
-                      else if cd !! 0 == "Unknown"
-                      then Nothing
-                      else Just (Error (read(cd !! 1)))
+                      else if cd !! 0 == "E"
+                      then Just (Error (read(cd !! 1)))
+                      else Nothing
 
 parseTimeStamp :: [String] -> Maybe TimeStamp
 parseTimeStamp cd = if elem (cd !! 2 !! 0 ) ['0','1','2','3','4','5','6','7','8','9']
-                    then read (cd !! 2)
-                    else if elem (cd !! 2 !! 0) ""
-                    then Nothing
-                    else read( cd !! 1 )
+                    then Just (read (cd !! 2))
+                    else if elem (cd !! 1 !! 0) ['0','1','2','3','4','5','6','7','8','9']
+                    then Just (read (cd !! 1))
+                    else Nothing
 
 parseString :: [String] -> Maybe String
 parseString cd = if elem (cd !! 2 !! 0 ) ['0','1','2','3','4','5','6','7','8','9']
                  then Just (unwords (drop 3 cd))
-                 else if elem (cd !! 2 !! 0) [' ']
-                 then Just (unwords (drop 1 cd))
-                 else Just (unwords (drop 2 cd))
+                 else if elem (cd !! 1 !! 0) ['0','1','2','3','4','5','6','7','8','9']
+                 then Just (unwords (drop 2 cd))
+                 else Just (unwords (cd))
 
 insert :: LogMessage -> MessageTree -> MessageTree
 insert (Unknown _) as = as

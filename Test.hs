@@ -26,8 +26,8 @@ tests = testGroup "unit tests"
       LogMessage (Error 4) 5 "This is an error")
 
   , testCase "parseMessage Unknown"
-     ( parseMessage "Unknown words are written here" @?=
-      Unknown "words are written here")
+     ( parseMessage "asdf words are written here" @?=
+     Unknown "asdf words are written here")
     -- We should also test the smaller parts.  Change the test below
     -- to match the code you actually wrote.
   , testCase "parseType I"
@@ -35,11 +35,31 @@ tests = testGroup "unit tests"
       @?=Just Info)
 
     -- Add at least 3 more tests for MessageType parsing in isolation.
+  , testCase "parseType E"
+    ( parseType ["E","3","4","tasty","hats","yum"]
+    @?= Just (Error 3))
 
+  , testCase "parseType W"
+    ( parseType ["W","3","eating","pie","yum"]
+    @?= Just Warning)
+
+  , testCase "parseType Unknown"
+    ( parseType ["JOIEHR","stuff","kappaPride"]
+    @?= Nothing)
     -- Add tests for timestamp parsing.  Think in particular about
     -- what the function does if the input doesn't start with a digit,
     -- or has some spaces followed by digits.
+   , testCase "parseTimeStamp onenum"
+    ( parseTimeStamp ["I","6","Completed","armadillo","processing"]
+    @?= Just 6)
 
+  , testCase "parseTimeStamp Error"
+    ( parseTimeStamp ["E","3","4","tasty","hats","yum"]
+    @?= Just 4)
+
+  , testCase "parseTimeStamp NA"
+    ( parseTimeStamp ["JOIEHR","stuff","kappaPride"]
+    @?= Nothing)
     -- How many tests do you think is enough?  Write at least 3
     -- sentences explaining your decision.
 
