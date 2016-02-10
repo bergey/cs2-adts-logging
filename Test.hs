@@ -71,7 +71,25 @@ tests = testGroup "unit tests"
     -- Write at least 5 tests for 'insert', with sufficiently
     -- different inputs to test most of the cases.  Look at your code
     -- for 'insert', and any bugs you ran into while writing it.
-   
+   , testCase "insertTest 1"
+     ( insert (LogMessage Info 4 "yo") Leaf
+     @?= Node Leaf (LogMessage Info 4 "yo") Leaf)
+
+   , testCase "insertTest 2"
+     ( insert (LogMessage (Error 3) 6 "o boy") (Node Leaf (LogMessage Info 4 "yo") Leaf)
+     @?= Node Leaf (LogMessage (Error 3) 6 "o boy") (Node Leaf (LogMessage Info 4 "yo") Leaf))
+
+   , testCase "insertTest 3"
+     ( insert (Unknown "string") Leaf
+     @?= Leaf)
+
+   , testCase "insertTest 4"
+     ( insert (LogMessage Warning 2 "yolo") (Node Leaf (LogMessage Info 4 "yo") Leaf)
+     @?= Node (Node Leaf (LogMessage Info 4 "yo") Leaf)(LogMessage Warning 2 "yolo") Leaf)
+
+   , testCase "insertTest 5"
+     ( insert (LogMessage Warning 2 "yolo") (Node (Node Leaf (LogMessage Warning 7 "warned") Leaf) (LogMessage Info 4 "yo") Leaf)
+     @?= Node (Node (Node Leaf (LogMessage Warning 7 "warned") Leaf) (LogMessage Info 4 "yo") Leaf) (LogMessage Warning 2 "yolo") Leaf)
     -- Next week we'll have the computer write more tests, to help us
     -- be more confident that we've tested all the tricky bits and
     -- edge cases.  There are also tools to make sure that our tests
