@@ -101,7 +101,12 @@ tests = testGroup "unit tests"
     -- inputs.  You may want to reuse MessageTrees from the tests on
     -- 'insert' above.  You may even want to move them elsewhere in
     -- the file and give them names, to more easiely reuse them.
-
+   , testCase "inOrder 1"
+     ( inorder (Node Leaf (LogMessage Info 4 "yo") Leaf)
+     @?= (LogMessage Info 4 "yo"):inorder Leaf ++ inorder Leaf)
+   , testCase "inOrder 2"
+     ( inorder Leaf
+     @?= [])
   ]
 
 main = defaultMain tests
