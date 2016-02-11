@@ -59,10 +59,10 @@ build [] = Leaf
 build (c:ccs) = insert (c) (build ccs)
 
 inorder :: MessageTree -> [LogMessage]
-inorder (Node z (LogMessage x b n) v) = (LogMessage x b n):inorder v ++ inorder z 
+inorder (Node z (LogMessage x b n) v) = (LogMessage x b n):inorder v ++ inorder z
 inorder Leaf = []
 
---whatWentWrong :: [LogMessage] -> [String]
---whatWentWrong ((LogMessage j k l):ccs) = if k > 50
---                                       then l
---                                       else ccs
+whatWentWrong :: [LogMessage] -> [String]
+whatWentWrong ((LogMessage j k l):ccs) = if k > 50
+                                         then l:whatWentWrong ccs
+                                         else whatWentWrong ccs
