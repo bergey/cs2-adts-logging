@@ -107,6 +107,9 @@ tests = testGroup "unit tests"
    , testCase "inOrder 2"
      ( inorder Leaf
      @?= [])
+   , testCase "inOrder 3"
+     ( inorder (Node (Node Leaf (LogMessage Warning 2 "aye") Leaf) (LogMessage Info 4 "yo") Leaf)
+     @?= (LogMessage Info 4 "yo"): inorder Leaf ++ inorder (Node Leaf (LogMessage Warning 2 "aye")Leaf))
   ]
 
 main = defaultMain tests
