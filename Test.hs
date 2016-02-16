@@ -1,8 +1,10 @@
 -- This is how we import only a few definitions from Test.Tasty
 import Test.Tasty (defaultMain, testGroup, TestTree)
 import Test.Tasty.HUnit
+import Test.Tasty.QuickCheck
 
 import Log
+import LogInstances
 
 -- import everything *except* `main` from LogAnalysis
 import LogAnalysis hiding (main)
@@ -24,7 +26,7 @@ tests = testGroup "unit tests"
       LogMessage Info 6 "Completed armadillo processing" )
     -- If you don't have a function called praseMessage, change the
     -- test to match your code.
-    
+
   --  -- Add at least 3 more test cases for 'parseMessage', including
   --  -- one with an error, one with a warning, and one with an Unknown
     ,testCase "parseMessage Error"
@@ -53,7 +55,7 @@ tests = testGroup "unit tests"
   , testCase "checkMessageType W"
     ( checkMessageType 'W'
         @?= Just Warning)
-    
+
   , testCase "checkMessageType Unknown"
     ( checkMessageType 'C'
         @?= Nothing)
@@ -84,7 +86,7 @@ tests = testGroup "unit tests"
 
 --I think it is enough tests when you can tell based off of which test fails, which part is failing. For instance, if the error fails, I know that
 --the program is failing in recognizing errors. Or for Insert, that it failed because I was missing a blank case. As long as from my tests, I can tell which program is failing,
---on which acceptable imput, I feel that is sufficient tests. 
+--on which acceptable imput, I feel that is sufficient tests.
 
     -- Write at least 5 tests for 'insert', with sufficiently
     -- different inputs to test most of the cases.  Look at your code
@@ -129,7 +131,23 @@ tests = testGroup "unit tests"
     -- inputs.  You may want to reuse MessageTrees from the tests on
     -- 'insert' above.  You may even want to move them elsewhere in
     -- the file and give them names, to more easiely reuse them.
-  
+
+    , testProperty "build sorted"
+    (\msgList -> isSorted (inOrder (build msgList)))
+
+    -- show :: Int -> String
+    -- gives the String representation of an Int
+    -- Use show to test your code to parse Ints
+
+    -- Write a function that takes a MessageType, and makes a String
+    -- with the same format as the log file:
+    -- stringMessageType :: MessageType -> String
+    -- Use this to test your code that parses MessageType
+
+    -- Make another function that makes a String from a whole LogMessage
+    -- stringLogMessage :: LogMessage -> String
+    -- Use it to test parseMessage
+
   ]
 
 main = defaultMain tests
