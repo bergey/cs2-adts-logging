@@ -2,9 +2,6 @@ module LogAnalysis where
 
 import           Log
 
-main :: IO ()
-main = undefined
-
 parseMessageMessageType :: [String] -> (Maybe MessageType , String)
 parseMessageMessageType (x:n:xs) = if x == "I"
 						then (Just Info , unwords (n:xs))
@@ -43,6 +40,16 @@ instance Ord LogMessage where
 	Unknown s1 <= LogMessage mt2 ts2 s2 = False
 
 build :: [LogMessage] -> MessageTree
-build lMessage = map (insert Leaf) lMessage
+build lMessage = foldr (insert Leaf) lMessage
 
-  
+inOrder :: MessageTree -> [LogMessage]
+inOrder Leaf = []
+inOrder (Node l lm r) = (inOrder l) ++ [lm] ++ (inOrder r) 
+
+whatWentWrong :: [LogMessage] -> [String]
+whatWentWrong lms = build (lmE) where 
+	lmE = filter (= Error) lms
+
+instance Eq LogMessage where
+	LogMessage mt1 ts1 s1 <= LogMessage mt2 ts2 s2 = ts1 <= ts2  
+
